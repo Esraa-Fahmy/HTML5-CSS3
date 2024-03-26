@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document5</title>
+    <style>
+        #mainDiv{
+            width: 80vw;
+            height:90vh;
+            margin: auto;
+            border: 2px solid ;
+            text-align: center;
+           
+        }
+#divOne{
+    
+    
+    display: flex;
+    margin: 3rem ; 
+    height: 70px;
+    justify-content: center;
+    border: 2px solid rgb(25, 11, 221);
+    background-color: rgb(245, 170, 72);
+    
+}
+button{
+    width: 25%;
+    height: 45%;
+    margin: 20px;
+    border-radius: 20%;
+    color: white;
+    background-image:linear-gradient(to right , rgb(133 206 248) , rgb(32 92 202));
+}
+button:hover{
+    transform: translate(10px ) scale(1.2);
+   
+}
+#showDiv{
+    width:90%;
+    height:70%;
+    border: 2px solid gray;
+    margin: auto;
+    border-radius: 14%;
+    
+}
+
+    </style>
+
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB90FxtYG_ybAYXGkz0ybkmkboE2nEbezI"></script>
+<script>
+     window.addEventListener('load', function () {
+        mymap = document.getElementById('showDiv');
+    });
+        function getlocationfun() {
+            //1- check geolocation : aviablae in user browser or not
+            //1- if yes : ask user for permission
+            //a- allow : get Location object data
+            //b:block : display Message : web app can't suggect nearst services for you
+            //2- if no : display Message for user : update browser and try again
+            if (navigator.geolocation) {
+                // available
+                // ask user for permission : getCurrentPosition(success callback , error callback)
+                navigator.geolocation.getCurrentPosition(getposition);
+                console.log("succes");
+            } else {
+                //not available
+                mymap.innerText = "orry , Update Your Browser And Try Again !";
+            }
+            function getposition(e) {
+            //alert("Success");
+            //console.log(e);
+            lat = e.coords.latitude;
+            lon = e.coords.longitude;
+             accura = e.coords.accuracy;
+           timestam = new Date(e.timestamp);
+
+    
+            //latlon = lat + " , " + lon;
+            //mymap.innerText = latlon;
+
+            //1- create google latlng ovject ( lat , lon )
+            var location = new google.maps.LatLng(lat, lon);
+            //2- specify specs of map : zoom : , center
+            var specs = { zoom: 17, center: location };
+            // 3 retrive map and display map
+            new google.maps.Map(mymap, specs);
+        }
+       
+        }
+
+        let showedDiv = document.getElementById("showDiv")
+        function showDetails(post){
+
+
+    
+const show =`<h5> latitude</h5>
+<p> ${lat}
+   </p> 
+   <h5> longitude</h5>
+<p> ${lon}
+   </p> 
+   <h5> acurrency</h5>
+<p>${ accura }</p>
+   <h5> timeStamp</h5>
+<p> ${timestam}
+   </p> 
+
+   `
+   
+   document.getElementById("showDiv").innerHTML = show;
+}
+</script>
+
+</head>
+<body>
+    <div id="mainDiv">
+<div id="divOne">
+    <button type ="button " onclick="getlocationfun()">
+        Display Map
+    </button>
+    <button onclick="showDetails()">
+    Information Detials  
+    </button>
+</div>
+<div id="showDiv"></div>
+
+
+    </div>
+    
+</body>
+</html>
